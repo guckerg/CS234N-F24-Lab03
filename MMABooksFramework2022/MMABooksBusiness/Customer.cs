@@ -170,12 +170,21 @@ namespace MMABooksBusiness
 
         protected override void SetRequiredRules()
         {
-            throw new NotImplementedException();
+            mRules.RuleBroken("CustomerID", true);
+            mRules.RuleBroken("Name", true);
+            mRules.RuleBroken("Address", true);
+            mRules.RuleBroken("City", true);
+            mRules.RuleBroken("State", true);
+            mRules.RuleBroken("ZipCode", true);
         }
 
         protected override void SetUp()
         {
-            throw new NotImplementedException();
+            mProps = new CustomerProps();
+            mOldProps = new CustomerProps();
+
+            mdbReadable = new CustomerDB();
+            mdbWriteable = new CustomerDB();
         }
 
         #region constructors

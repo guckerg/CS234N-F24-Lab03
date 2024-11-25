@@ -109,7 +109,10 @@ namespace MMABooksBusiness
 
         protected override void SetRequiredRules()
         {
-            throw new NotImplementedException();
+            mRules.RuleBroken("ProductCode", true);
+            mRules.RuleBroken("Description", true);
+            mRules.RuleBroken("UnitPrice", true);
+            mRules.RuleBroken("OnHandQuantity", true);
         }
 
         protected override void SetUp()
