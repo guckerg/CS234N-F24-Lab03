@@ -11,6 +11,7 @@ namespace MMABooksProps
     [Serializable]
     public class CustomerProps: IBaseProps
     {
+        #region Auto-implemented Properties
         public int CustomerID { get; set; } = 0;
         public string Name { get; set; } = "";
         public string Address { get; set; } = "";
@@ -20,6 +21,8 @@ namespace MMABooksProps
 
         //ConcurrencyID - Do NOT Manipulate Directly
         public int ConcurrencyID { get; set; } = 0;
+        #endregion
+
         public object Clone()
         {
             CustomerProps p = new CustomerProps();
@@ -32,6 +35,7 @@ namespace MMABooksProps
             p.ConcurrencyID = this.ConcurrencyID;
             return p;
         }
+
         public string GetState()
         {
             string jsonString;

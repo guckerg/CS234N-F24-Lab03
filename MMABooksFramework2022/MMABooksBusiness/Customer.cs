@@ -177,5 +177,22 @@ namespace MMABooksBusiness
         {
             throw new NotImplementedException();
         }
+
+        #region constructors
+        public Customer() : base()
+        {
+        }
+
+        public Customer(string key)
+            : base(key)
+        {
+        }
+
+        private Customer(CustomerProps props)
+            : base(props)
+        {
+        }
+
+        #endregion
     }
 }
