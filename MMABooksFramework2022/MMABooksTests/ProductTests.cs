@@ -33,7 +33,7 @@ namespace MMABooksTests
             // not in Data Store - no code
             Product p = new Product();
             Assert.AreEqual(string.Empty, p.ProductCode);
-            Assert.AreEqual(string.Empty, p.UnitPrice);
+            Assert.AreEqual(0m, p.UnitPrice);
             Assert.IsTrue(p.IsNew);
             Assert.IsFalse(p.IsValid);
         }
@@ -42,8 +42,10 @@ namespace MMABooksTests
         [Test]
         public void TestRetrieveFromDataStoreContructor()
         {
+            //unsure how to write this test
+
             // retrieves from Data Store
-            Product p = new Product("A4CS");
+            Product p = new Product();
             Assert.AreEqual("A4CS", p.ProductCode);
             Assert.IsTrue(p.ProductCode.Length > 0);
             Assert.IsFalse(p.IsNew);
@@ -54,10 +56,13 @@ namespace MMABooksTests
         public void TestSaveToDataStore()
         {
             Product p = new Product();
-            p.ProductCode = "??";
-            p.Description = "Where am I";
-            p.Save();
-            Product p2 = new Product("??");
+            p.ProductCode = "ABC1";
+            p.Description = "This is a test";
+            p.UnitPrice = 1234.56m;
+            p.OnHandQuantity = 789;
+            
+            p.Save(); //save cannot run due to UniPrice and Quantity failing validation
+            Product p2 = new Product();
             Assert.AreEqual(p2.ProductCode, p.ProductCode);
             Assert.AreEqual(p2.Description, p.Description);
         }
@@ -65,11 +70,15 @@ namespace MMABooksTests
         [Test]
         public void TestUpdate()
         {
-            Product p = new Product("A1B1");
+            Product p = new Product();
             p.ProductCode = "A2B1";
-            p.Save();
+            p.Description = "TestUpdateDescription";
+            p.UnitPrice = 12.23m;
+            p.OnHandQuantity = 700;
 
-            Product p2 = new Product("A2B1");
+            p.Save(); //save cannot run due to unitPrice and Quantity failing validation
+
+            Product p2 = new Product();
             Assert.AreEqual(p2.ProductCode, p.ProductCode);
             Assert.AreEqual(p2.Description, p.Description);
         }
@@ -77,20 +86,20 @@ namespace MMABooksTests
         [Test]
         public void TestDelete()
         {
-            Product p = new Product("A2B2");
+            Product p = new Product();
             p.Delete();
             p.Save();
-            Assert.Throws<Exception>(() => new Product("A2B2"));
+            Assert.Throws<Exception>(() => new Product());
         }
 
         [Test]
         public void TestGetList()
         {
-            Product p = new Product();
+            Product p = new Product(2);
             List<Product> products = (List<Product>)p.GetList();
             Assert.AreEqual(16, products.Count);
-            Assert.AreEqual("A4CS", products[0].ProductCode);
-            Assert.AreEqual("Murach's ASP.NET 4 Web Programming with C# 2010", products[0].Description);
+            Assert.AreEqual("A4VB", p.ProductCode);
+            Assert.AreEqual(56.50, p.UnitPrice);
         }
 
         [Test]
@@ -113,14 +122,14 @@ namespace MMABooksTests
         public void TestInvalidPropertySet()
         {
             Product p = new Product();
-            Assert.Throws<ArgumentOutOfRangeException>(() => p.ProductCode = "?????");
+            Assert.Throws<ArgumentOutOfRangeException>(() => p.ProductCode = "01234567891");
         }
 
         [Test]
         public void TestConcurrencyIssue()
         {
-            Product p1 = new Product("A4CS");
-            Product p2 = new Product("A4CS");
+            Product p1 = new Product();
+            Product p2 = new Product();
 
             p1.ProductCode = "Updated first";
             p1.Save();

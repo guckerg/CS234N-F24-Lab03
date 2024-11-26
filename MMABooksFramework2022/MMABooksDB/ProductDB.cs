@@ -30,19 +30,27 @@ namespace MMABooksDB
             ProductProps props = (ProductProps)p;
 
             DBCommand command = new DBCommand();
+
             command.CommandText = "usp_ProductCreate";
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("ProductID", props.ProductID);
-            command.Parameters.AddWithValue("ProductCode", props.ProductCode);
-            command.Parameters.AddWithValue("Description", props.Description);
-            command.Parameters.AddWithValue("UnitPrice", props.UnitPrice);
-            command.Parameters.AddWithValue("OnHandQuantity", props.OnHandQuantity);
+
+            command.Parameters.AddWithValue("prodID", DBDbType.Int32);
+            command.Parameters.AddWithValue("prodCode", DBDbType.VarChar);
+            command.Parameters.AddWithValue("prodDesc", DBDbType.VarChar);
+            command.Parameters.AddWithValue("prodUnitPrice", DBDbType.Decimal);
+            command.Parameters.AddWithValue("prodOnHandQuantity", DBDbType.Int32);
+            command.Parameters[0].Direction = ParameterDirection.Output;
+            command.Parameters["prodCode"].Value = props.ProductCode;
+            command.Parameters["prodDesc"].Value = props.Description;
+            command.Parameters["prodUnitPrice"].Value = props.UnitPrice;
+            command.Parameters["prodOnHandQuantity"].Value = props.OnHandQuantity;
 
             try
             {
                 rowsAffected = RunNonQueryProcedure(command);
                 if (rowsAffected == 1)
                 {
+                    props.ProductID = (int)command.Parameters[0].Value;
                     props.ConcurrencyID = 1;
                     return props;
                 }
@@ -116,8 +124,8 @@ namespace MMABooksDB
 
             command.CommandText = "usp_ProductSelect";
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.Add("ProductID", DBDbType.VarChar);
-            command.Parameters["ProductID"].Value = key.ToString();
+            command.Parameters.Add("prodID", DBDbType.VarChar);
+            command.Parameters["prodID"].Value = (int)key;
 
             try
             {

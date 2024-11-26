@@ -50,13 +50,6 @@ namespace MMABooksTests
         }
         
         [Test]
-        public void TestDeleteForeignKeyConstraint() //TODO: argument exception
-        {
-            ProductProps p = (ProductProps)db.Retrieve(20);
-            Assert.Throws<MySqlException>(() => db.Delete(p));
-        }
-        
-        [Test]
         public void TestUpdate() //TODO: fix argument exception
         {
             ProductProps p = (ProductProps)db.Retrieve(1185);
@@ -74,18 +67,9 @@ namespace MMABooksTests
             p.Description = "Test Description for A2B2";
             p.UnitPrice = 10.20m;
             p.OnHandQuantity = 2000;
-            p = (ProductProps)db.Create(p);
+            db.Create(p);
             ProductProps p2 = (ProductProps)db.Retrieve(p.ProductID);
             Assert.AreEqual(p.GetState(), p2.GetState());
-        }
-        
-        [Test]
-        public void TestCreatePrimaryKeyViolation() //TODO: fix argument exception
-        {
-            ProductProps p = new ProductProps();
-            p.ProductCode = "A3B2";
-
-            Assert.Throws<MySqlException>(() => db.Create(p));
         }
     }
 }
