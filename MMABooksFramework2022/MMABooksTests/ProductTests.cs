@@ -10,6 +10,7 @@ using System.Data;
 using System.Collections.Generic;
 using System;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.CRUD;
 
 namespace MMABooksTests
 {
@@ -40,10 +41,8 @@ namespace MMABooksTests
 
 
         [Test]
-        public void TestRetrieveFromDataStoreContructor()
+        public void TestRetrieveFromDataStoreContructor()//unsure how to write this test
         {
-            //unsure how to write this test
-
             // retrieves from Data Store
             Product p = new Product();
             Assert.AreEqual("A4CS", p.ProductCode);
@@ -55,16 +54,17 @@ namespace MMABooksTests
         [Test]
         public void TestSaveToDataStore()
         {
-            Product p = new Product();
-            p.ProductCode = "ABC1";
-            p.Description = "This is a test";
-            p.UnitPrice = 1234.56m;
-            p.OnHandQuantity = 789;
-            
-            p.Save(); //save cannot run due to UniPrice and Quantity failing validation
+            Product p1 = new Product();
+            p1.ProductCode = "ABC1";
+            p1.Description = "Test Description for ABC1";
+            p1.UnitPrice = 33.33m;
+            p1.OnHandQuantity = 4444;
+
+            p1.Save();
+
             Product p2 = new Product();
-            Assert.AreEqual(p2.ProductCode, p.ProductCode);
-            Assert.AreEqual(p2.Description, p.Description);
+            Assert.AreEqual(p2.ProductCode, p1.ProductCode);
+            Assert.AreEqual(p2.Description, p1.Description);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace MMABooksTests
         }
 
         [Test]
-        public void TestDelete()
+        public void TestDelete() //TODO: write delete test
         {
             Product p = new Product();
             p.Delete();
